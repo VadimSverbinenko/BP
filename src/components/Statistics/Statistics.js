@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import "./Statistic.css";
+import "./Statistics.css";
 
 function Statistic() {
   const [totalPrice, setTotalPrice] = useState(0);

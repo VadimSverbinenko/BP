@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Main.css";
 import { Link } from "react-router-dom";
-import GoogleSheetsProvider from "react-db-google-sheets";
 
 function Main() {
+  //To add and test previous month
+  // let s = "27/02/2021, 13:00:42";
+
   const [data, setData] = useState({
     food: 0,
     health: 0,
@@ -11,9 +13,20 @@ function Main() {
     utilities: 0,
     personal: 0,
     groceries: 0,
+    date: new Date().toLocaleString(),
+    id: Math.floor(Math.random() * 1000 + 1),
   });
 
-  const { food, health, transportation, utilities, personal, groceries } = data;
+  const {
+    food,
+    health,
+    transportation,
+    utilities,
+    personal,
+    groceries,
+    date,
+    id,
+  } = data;
 
   const [nameOfList, setCurrentValue] = useState(() => {
     return "food";
@@ -56,94 +69,30 @@ function Main() {
 
     setData({ ...data, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    getLocalData();
+  }, []);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch(
-  //       // "https://docs.google.com/spreadsheets/d/e/2PACX-1vT61MCAWfYnGX522bFcM3wduSXArC4M9CnZei7ia0emHNl1xMT5WHKD2n0ZicDY9gTYCNt-Siqf-qWJ/pubhtml?gid=0&single=true"
-
-  //       // "https://spreadsheets.google.com/feeds/cells/1aFkZuswePNJIHP2s-R0dWNlxBkF03CbQ2vqP9wUwVmw/:batchUpdate"
-  //       // "https://spreadsheets.google.com/feeds/cells/2PACX-1vT61MCAWfYnGX522bFcM3wduSXArC4M9CnZei7ia0emHNl1xMT5WHKD2n0ZicDY9gTYCNt-Siqf-qWJ/:batchUpdate",
-  //       "https://sheet.best/api/sheets/48f4a4e8-43a0-4c73-8a17-df97a3df140a",
-  //       {
-  //         method: "POST",
-  //         mode: "cors",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify([
-  //           [
-  //             food,
-  //             health,
-  //             new Date().toLocaleString(),
-  //             transportation,
-  //             utilities,
-  //             personal,
-  //             groceries,
-  //           ],
-  //         ]),
-  //       }
-  //     );
-  //     await response.json();
-
-  //     setData((data) => {
-  //       return {
-  //         ...data,
-  //         food: 0,
-  //         health: 0,
-  //         transportation: 0,
-  //         utilities: 0,
-  //         personal: 0,
-  //         groceries: 0,
-  //       };
-  //     });
-  //     changeList(0);
-
-  //     changeValue();
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-  let bodyyy = {
-    Food: "1",
-    "Utilities ": "1",
-    Date: "19/03/2021, 14:33:50",
-    Transportation: "1",
-    "Medical & Healthcare": "1",
-    "Personal Spending": "1",
-    "Groceries/Dinning": "1",
+  const handleSubmit = () => {
+    addItem(data);
   };
 
-  const handleSubmit = () => {};
-  fetch("https://sheet.best/api/sheets/48f4a4e8-43a0-4c73-8a17-df97a3df140a")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  console.log("zzzzzzzzzzzzzzzzzz");
-  const handleSubmita = () => {};
-  fetch("https://sheet.best/api/sheets/48f4a4e8-43a0-4c73-8a17-df97a3df140a", {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(bodyyy),
-  })
-    .then((r) => r.json())
-    .then((data) => {
-      // The response comes here
-      console.log(data);
-    })
-    .catch((error) => {
-      // Errors are reported there
-      console.log(error);
-    });
+  const getLocalData = () => {
+    if (localStorage.getItem("data") === null) {
+      localStorage.setItem("data", JSON.stringify([]));
+    }
+  };
+
+  // add item
+  function addItem(item) {
+    let value = getData();
+    value.push(item);
+    localStorage.setItem("data", JSON.stringify(value));
+  }
+  // remove get data
+  function getData() {
+    return JSON.parse(localStorage.getItem("data"));
+  }
 
   return (
     <div className="container center">
@@ -183,8 +132,11 @@ function Main() {
           />
         </div>
       </form>
-      <Link className=" btn btn-primary" to="/statistic">
+      <Link className=" btn btn-primary" to="/statistics">
         Statistics
+      </Link>
+      <Link className=" btn btn-primary" to="/statistics2">
+        Statistics2
       </Link>
     </div>
   );
