@@ -1,0 +1,32 @@
+.center {
+  margin-top: 5rem;
+  width: fit-content;
+  text-align: center;
+  border: rgb(68, 29, 212) solid 3px;
+  width: 350px;
+  height: 300px;
+}
+.lable {
+  margin: 10px 0 10px 0;
+}
+
+.color {
+  color: brown;
+}
+
+.btn {
+  width: 100%;
+  margin-bottom: 5px;
+}
+li {
+  text-align: left;
+}
+.bordet-top {
+  border-top: 5px solid black;
+}
+
+.bordet-bottom {
+  border-bottom: 5px solid black;
+  text-align: left;
+  font-size: large;
+}
